@@ -3,7 +3,8 @@ import { PageShell } from "@/components/page-shell";
 import { Reveal } from "@/components/reveal";
 import { MessageCircle, Phone, Mail } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/integrations/firebase/client";
+import { collection, addDoc } from "firebase/firestore";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
@@ -34,20 +35,23 @@ function ContactPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.from("contact_messages").insert({
-      name: form.name,
-      email: form.email,
-      subject: form.subject || null,
-      message: form.message,
-    });
-    setLoading(false);
-    if (error) {
+    try {
+      await addDoc(collection(db, "contact_messages"), {
+        name: form.name,
+        email: form.email,
+        subject: form.subject || null,
+        message: form.message,
+        createdAt: new Date().toISOString()
+      });
+      setSent(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
+      toast.success("Message sent — we'll be in touch.");
+    } catch (error) {
+      console.error("Error submitting contact form: ", error);
       toast.error("Could not send. Please try again.");
-      return;
+    } finally {
+      setLoading(false);
     }
-    setSent(true);
-    setForm({ name: "", email: "", subject: "", message: "" });
-    toast.success("Message sent — we'll be in touch.");
   }
 
   return (
