@@ -39,16 +39,16 @@ function Index() {
         {/* HERO */}
         <section className="border-b border-rule">
           <div className="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-24 md:pb-28">
-            <div className="grid md:grid-cols-12 gap-10 items-end">
-              <div className="md:col-span-8 animate-fade-up">
+            <div className="grid md:grid-cols-12 gap-10 lg:gap-14 items-end">
+              <div className="md:col-span-7 animate-fade-up">
                 <p className="eyebrow text-muted-foreground">Studio</p>
-                <h1 className="mt-5 font-sans font-black uppercase text-[9vw] md:text-[8rem] leading-[1.05] tracking-tighter text-foreground">
-                  <span className="yellow-bar whitespace-nowrap">Frame &amp; Form</span>
+                <h1 className="hero-title mt-5 font-sans font-black uppercase text-foreground">
+                  <span className="yellow-bar">Frame &amp; Form</span>
                   <br />
                   <span className="yellow-bar">Labs</span>
                 </h1>
               </div>
-              <div className="md:col-span-4 md:pb-6">
+              <div className="md:col-span-5 md:pb-6">
                 <p className="text-base md:text-lg text-muted-foreground max-w-sm">
                   An editorial-minded design and development studio crafting cinematic, premium
                   digital experiences for ambitious brands.

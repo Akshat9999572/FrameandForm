@@ -81,6 +81,11 @@
     font-size: 0.72rem;
   }
   .rule-top { border-top: 1px solid var(--rule); }
+  .hero-title {
+    font-size: clamp(3.4rem, 5.15vw, 5.8rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
   .yellow-bar {
     display: inline-block;
     background: var(--primary);
