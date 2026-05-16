@@ -1,3 +1,4 @@
+import { getAnalytics, isSupported } from "firebase/analytics";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -19,6 +20,10 @@ if (missingConfig.length > 0) {
   throw new Error(`Missing Firebase environment variable(s): ${missingConfig.join(", ")}`);
 }
 
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-
+export const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+export const analytics =
+  typeof window !== "undefined"
+    ? isSupported().then((supported) => (supported ? getAnalytics(app) : null))
+    : null;

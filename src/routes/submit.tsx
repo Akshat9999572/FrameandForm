@@ -34,18 +34,21 @@ function SubmitPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await addDoc(collection(db, "queries"), {
-        name: form.name,
-        email: form.email,
-        company: form.company || null,
-        website: form.website || null,
-        project_type: projectType,
-        description: form.description,
-        created_at: serverTimestamp(),
-      });
+      await withTimeout(
+        addDoc(collection(db, "queries"), {
+          name: form.name,
+          email: form.email,
+          company: form.company || null,
+          website: form.website || null,
+          project_type: projectType,
+          description: form.description,
+          created_at: serverTimestamp(),
+        }),
+        12000,
+      );
       setSent(true);
     } catch (error) {
-      console.error(error);
+      console.error("Error submitting query:", error);
       toast.error("Could not send. Please try again.");
     } finally {
       setLoading(false);
@@ -111,6 +114,15 @@ function SubmitPage() {
       `}</style>
     </PageShell>
   );
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number) {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeoutMs),
+    ),
+  ]);
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
