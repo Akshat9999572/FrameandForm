@@ -79,11 +79,6 @@ function Index() {
             >
               <source src={showreel} type="video/mp4" />
             </video>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-primary text-ink p-6 rounded-full font-mono text-xs uppercase tracking-widest scale-90 group-hover:scale-100 transition duration-500 shadow-2xl">
-                Play Reel
-              </div>
-            </div>
           </div>
         </section>
 
