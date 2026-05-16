@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Reveal } from "@/components/reveal";
+import showreel from "@/assets/VID_20260516_212845.mp4";
 import founder from "@/assets/founder.png";
 import logo from "@/assets/logo.png";
 
@@ -61,6 +62,26 @@ function Index() {
                     Get in touch
                   </Link>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CINEMATIC SHOWREEL SECTION */}
+        <section className="border-b border-rule bg-ink overflow-hidden">
+          <div className="relative aspect-video md:aspect-[21/9] w-full group cursor-pointer">
+            <video 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-700"
+            >
+              <source src={showreel} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="bg-primary text-ink p-6 rounded-full font-mono text-xs uppercase tracking-widest scale-90 group-hover:scale-100 transition duration-500 shadow-2xl">
+                Play Reel
               </div>
             </div>
           </div>
