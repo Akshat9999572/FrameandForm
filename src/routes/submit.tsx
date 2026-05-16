@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/integrations/firebase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/submit")({
@@ -32,20 +33,23 @@ function SubmitPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.from("queries").insert({
-      name: form.name,
-      email: form.email,
-      company: form.company || null,
-      website: form.website || null,
-      project_type: projectType,
-      description: form.description,
-    });
-    setLoading(false);
-    if (error) {
+    try {
+      await addDoc(collection(db, "queries"), {
+        name: form.name,
+        email: form.email,
+        company: form.company || null,
+        website: form.website || null,
+        project_type: projectType,
+        description: form.description,
+        created_at: serverTimestamp(),
+      });
+      setSent(true);
+    } catch (error) {
+      console.error(error);
       toast.error("Could not send. Please try again.");
-      return;
+    } finally {
+      setLoading(false);
     }
-    setSent(true);
   }
 
   return (
