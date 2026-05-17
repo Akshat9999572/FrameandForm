@@ -16,16 +16,16 @@ export const Route = createFileRoute("/services")({
 });
 
 const services = [
-  { t: "Website Development", d: "Editorial, performant sites built with care from grid to deploy." },
-  { t: "UX / UI Design", d: "Interfaces that feel inevitable — clear, considered, premium." },
-  { t: "App Development", d: "Native-quality mobile and web apps with refined interaction." },
-  { t: "Professional Branding", d: "Identity systems with personality, structure and longevity." },
-  { t: "Video & Motion", d: "Cinematic promos, motion graphics and product films." },
-  { t: "Sports Tournament Creatives", d: "Match-day visuals, fixture cards, hype reels and brand kits." },
-  { t: "Social Media Design", d: "Campaigns built for feed velocity without losing craft." },
-  { t: "Posters & Banners", d: "Print and digital with editorial typography at the core." },
-  { t: "Event Visuals", d: "Wayfinding, stage design and on-screen graphics." },
-  { t: "Marketing Creatives", d: "Performance assets that respect the brand." },
+  { slug: "website-development", t: "Website Development", d: "Editorial, performant sites built with care from grid to deploy." },
+  { slug: "ux-ui-design", t: "UX / UI Design", d: "Interfaces that feel inevitable — clear, considered, premium." },
+  { slug: "app-development", t: "App Development", d: "Native-quality mobile and web apps with refined interaction." },
+  { slug: "professional-branding", t: "Professional Branding", d: "Identity systems with personality, structure and longevity." },
+  { slug: "video-motion", t: "Video & Motion", d: "Cinematic promos, motion graphics and product films." },
+  { slug: "sports-tournament-creatives", t: "Sports Tournament Creatives", d: "Match-day visuals, fixture cards, hype reels and brand kits." },
+  { slug: "social-media-design", t: "Social Media Design", d: "Campaigns built for feed velocity without losing craft." },
+  { slug: "posters-banners", t: "Posters & Banners", d: "Print and digital with editorial typography at the core." },
+  { slug: "event-visuals", t: "Event Visuals", d: "Wayfinding, stage design and on-screen graphics." },
+  { slug: "marketing-creatives", t: "Marketing Creatives", d: "Performance assets that respect the brand." },
 ];
 
 function ServicesPage() {
@@ -37,14 +37,16 @@ function ServicesPage() {
     >
       <div className="grid md:grid-cols-2 gap-px bg-rule border border-rule">
         {services.map((s, i) => (
-          <article key={s.t} className="bg-background p-8 hover:bg-foreground hover:text-background transition group">
-            <div className="flex items-baseline justify-between">
-              <span className="font-mono text-xs text-muted-foreground group-hover:text-background/60">{String(i + 1).padStart(2, "0")}</span>
-              <span className="font-mono text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition">→</span>
-            </div>
-            <h3 className="mt-6 font-display text-2xl md:text-3xl">{s.t}</h3>
-            <p className="mt-3 text-sm md:text-base text-muted-foreground group-hover:text-background/70">{s.d}</p>
-          </article>
+          <Link key={s.t} to="/services/$slug" params={{ slug: s.slug }} className="block bg-background p-8 hover:bg-foreground hover:text-background transition group">
+            <article>
+              <div className="flex items-baseline justify-between">
+                <span className="font-mono text-xs text-muted-foreground group-hover:text-background/60">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition">→</span>
+              </div>
+              <h3 className="mt-6 font-display text-2xl md:text-3xl">{s.t}</h3>
+              <p className="mt-3 text-sm md:text-base text-muted-foreground group-hover:text-background/70">{s.d}</p>
+            </article>
+          </Link>
         ))}
       </div>
       <div className="mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-t border-rule pt-10">

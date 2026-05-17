@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Reveal } from "@/components/reveal";
-import showreel from "@/assets/VID_20260516_212845.mp4";
+import { ImageSequence } from "@/components/image-sequence";
 import founder from "@/assets/founder.png";
 import logo from "@/assets/logo.png";
 
@@ -21,15 +21,15 @@ export const Route = createFileRoute("/")({
 });
 
 const services = [
-  "Banner Design",
-  "Poster Design",
-  "Logo Design",
-  "Web Development",
-  "UX / UI Design",
-  "App Development",
-  "Branding",
-  "Motion & Video",
-  "Editorial Design",
+  { t: "Website Development", slug: "website-development" },
+  { t: "UX / UI Design", slug: "ux-ui-design" },
+  { t: "App Development", slug: "app-development" },
+  { t: "Professional Branding", slug: "professional-branding" },
+  { t: "Video & Motion", slug: "video-motion" },
+  { t: "Sports Creatives", slug: "sports-tournament-creatives" },
+  { t: "Social Media", slug: "social-media-design" },
+  { t: "Posters & Banners", slug: "posters-banners" },
+  { t: "Event Visuals", slug: "event-visuals" },
 ];
 
 function Index() {
@@ -69,16 +69,12 @@ function Index() {
 
         {/* CINEMATIC SHOWREEL SECTION */}
         <section className="border-b border-rule bg-ink overflow-hidden">
-          <div className="relative aspect-video md:aspect-[21/9] w-full group cursor-pointer">
-            <video 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
+          <div className="relative aspect-video md:aspect-[21/9] w-full group cursor-pointer bg-black">
+            <ImageSequence 
+              frameCount={181} 
+              basePath="/animation" 
               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-700"
-            >
-              <source src={showreel} type="video/mp4" />
-            </video>
+            />
           </div>
         </section>
 
@@ -165,12 +161,14 @@ function Index() {
             </div>
             <ul className="divide-y divide-rule border-y border-rule">
               {services.map((s, i) => (
-                <Reveal as="li" key={s} delay={i * 70} className="group flex items-center justify-between py-6 hover:px-3 transition-all">
-                  <div className="flex items-baseline gap-6">
-                    <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
-                    <span className="font-display text-2xl md:text-3xl group-hover:text-primary transition">{s}</span>
-                  </div>
-                  <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground group-hover:text-foreground">→</span>
+                <Reveal as="li" key={s.slug} delay={i * 70} className="group transition-all">
+                  <Link to="/services/$slug" params={{ slug: s.slug }} className="flex items-center justify-between py-6 group-hover:px-3 w-full transition-all">
+                    <div className="flex items-baseline gap-6">
+                      <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
+                      <span className="font-display text-2xl md:text-3xl group-hover:text-primary transition">{s.t}</span>
+                    </div>
+                    <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground group-hover:text-foreground">→</span>
+                  </Link>
                 </Reveal>
               ))}
             </ul>
