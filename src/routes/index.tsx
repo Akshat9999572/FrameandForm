@@ -110,8 +110,8 @@ function Index() {
                 Elevate your brand with interactive, cinematic 3D scenes that run smoothly directly in the browser. We build experiences that users want to touch.
               </p>
             </Reveal>
-            <Reveal delay={120} className="md:col-span-7 h-[450px] md:h-[600px] w-full rounded-xl overflow-hidden ring-1 ring-rule shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] bg-slate-50/50">
-              <iframe src="https://my.spline.design/stackableglass-LvMxYsljdCw2iv7wdygSLcwN-n1D/" frameBorder="0" width="100%" height="100%" title="Interactive 3D Glass Stack"></iframe>
+            <Reveal delay={120} className="md:col-span-7 h-[450px] md:h-[600px] w-full rounded-xl overflow-hidden ring-1 ring-rule shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] bg-slate-50/50 relative">
+              <iframe src="https://my.spline.design/stackableglass-LvMxYsljdCw2iv7wdygSLcwN-n1D/" frameBorder="0" className="absolute top-0 left-0 w-full h-[calc(100%+60px)]" title="Interactive 3D Glass Stack"></iframe>
             </Reveal>
           </div>
         </section>
