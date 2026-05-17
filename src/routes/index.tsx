@@ -74,6 +74,7 @@ function Index() {
               frameCount={181} 
               basePath="/animation" 
               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-700"
+              scrollControlled={true}
             />
           </div>
         </section>
