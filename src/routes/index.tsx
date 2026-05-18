@@ -97,8 +97,29 @@ function Index() {
                 Elevate your brand with interactive, cinematic 3D scenes that run smoothly directly in the browser. We build experiences that users want to touch.
               </p>
             </Reveal>
-            <Reveal delay={120} className="md:col-span-7 h-[450px] md:h-[600px] w-full rounded-xl overflow-hidden ring-1 ring-rule shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] bg-slate-50/50 relative">
-              <iframe src="https://my.spline.design/stackableglass-LvMxYsljdCw2iv7wdygSLcwN-n1D/" frameBorder="0" className="absolute top-0 left-0 w-full h-[calc(100%+60px)]" title="Interactive 3D Glass Stack"></iframe>
+            <Reveal delay={120} className="md:col-span-7">
+              <div className="spline-mobile-fallback">
+                <div className="spline-mobile-orb spline-mobile-orb-a" />
+                <div className="spline-mobile-orb spline-mobile-orb-b" />
+                <div className="relative z-10">
+                  <p className="eyebrow text-muted-foreground">Mobile preview</p>
+                  <h3 className="mt-4 font-display text-3xl leading-tight">
+                    Cinematic 3D, optimized for every screen.
+                  </h3>
+                  <p className="mt-4 text-sm text-muted-foreground">
+                    The full interactive scene is available on larger screens for smoother performance.
+                  </p>
+                </div>
+              </div>
+              <div className="spline-desktop-frame">
+                <iframe
+                  src="https://my.spline.design/stackableglass-LvMxYsljdCw2iv7wdygSLcwN-n1D/"
+                  frameBorder="0"
+                  loading="lazy"
+                  className="absolute top-0 left-0 w-full h-[calc(100%+60px)]"
+                  title="Interactive 3D Glass Stack"
+                />
+              </div>
             </Reveal>
           </div>
         </section>
