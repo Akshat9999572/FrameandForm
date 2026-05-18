@@ -1,127 +1,105 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
-
-const serviceDetails: Record<string, { title: string; description: string; template: string }> = {
-  "website-development": {
-    title: "Website Development",
-    description: "Editorial, performant sites built with care from grid to deploy.",
-    template: "We architect web platforms that combine editorial aesthetics with modern frontend frameworks. Think smooth transitions, precise typography, and rock-solid performance."
-  },
-  "ux-ui-design": {
-    title: "UX / UI Design",
-    description: "Interfaces that feel inevitable — clear, considered, premium.",
-    template: "Every digital touchpoint should feel intuitive and premium. We design user flows and interface elements that prioritize clarity without sacrificing visual flair."
-  },
-  "app-development": {
-    title: "App Development",
-    description: "Native-quality mobile and web apps with refined interaction.",
-    template: "From React Native to responsive web apps, we build tools that users actually want to use. Focused on fluidity, state management, and elegant architecture."
-  },
-  "professional-branding": {
-    title: "Professional Branding",
-    description: "Identity systems with personality, structure and longevity.",
-    template: "A brand is more than a logo. We create comprehensive identity systems—colors, typography, voice, and motion—that ensure consistency across every medium."
-  },
-  "video-motion": {
-    title: "Video & Motion",
-    description: "Cinematic promos, motion graphics and product films.",
-    template: "Motion breathes life into design. We create cinematic sequences and micro-interactions that capture attention and guide the user's eye."
-  },
-  "sports-tournament-creatives": {
-    title: "Sports Tournament Creatives",
-    description: "Match-day visuals, fixture cards, hype reels and brand kits.",
-    template: "High-energy visuals tailored for the sports industry. We deliver cohesive branding packages for tournaments that elevate the fan experience."
-  },
-  "social-media-design": {
-    title: "Social Media Design",
-    description: "Campaigns built for feed velocity without losing craft.",
-    template: "Scroll-stopping assets designed for modern platforms. We balance brand integrity with the algorithmic need for velocity and engagement."
-  },
-  "posters-banners": {
-    title: "Posters & Banners",
-    description: "Print and digital with editorial typography at the core.",
-    template: "Whether large-format print or digital display, our poster and banner designs lean heavily into structured grid systems and impactful typography."
-  },
-  "event-visuals": {
-    title: "Event Visuals",
-    description: "Wayfinding, stage design and on-screen graphics.",
-    template: "Physical experiences require spatial thinking. We design comprehensive visual packages for events that guide, inform, and impress attendees."
-  },
-  "marketing-creatives": {
-    title: "Marketing Creatives",
-    description: "Performance assets that respect the brand.",
-    template: "Conversion-focused design doesn't have to look cheap. We build marketing assets that perform well while maintaining a premium brand perception."
-  },
-};
+import { CapabilityAnimation } from "@/components/capability-animation";
+import { capabilities, getCapability } from "@/lib/capabilities";
 
 export const Route = createFileRoute("/services/$slug")({
-  component: ServiceDetail,
+  loader: ({ params }) => {
+    const capability = getCapability(params.slug);
+    if (!capability) {
+      throw notFound();
+    }
+    return { capability };
+  },
+  head: ({ loaderData }) => ({
+    meta: [
+      { title: `${loaderData?.capability.title ?? "Capability"} — Frame & Form Labs` },
+      {
+        name: "description",
+        content: loaderData?.capability.lede ?? "Capability details from Frame & Form Labs.",
+      },
+      { property: "og:title", content: `${loaderData?.capability.title ?? "Capability"} — Frame & Form Labs` },
+      { property: "og:description", content: loaderData?.capability.short ?? "" },
+      { property: "og:url", content: `/services/${loaderData?.capability.slug ?? ""}` },
+    ],
+    links: loaderData ? [{ rel: "canonical", href: `/services/${loaderData.capability.slug}` }] : [],
+  }),
+  component: CapabilityPage,
 });
 
-function ServiceDetail() {
-  const { slug } = Route.useParams();
-  const service = serviceDetails[slug];
-
-  if (!service) {
-    return (
-      <PageShell eyebrow="Error" title={<>Service <span className="yellow-bar italic">Not Found</span></>}>
-        <div className="py-20 text-center">
-          <p className="text-xl text-muted-foreground mb-8">We couldn't find the service you're looking for.</p>
-          <Link to="/services" className="bg-foreground text-background px-6 py-4 font-mono text-xs uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition">
-            Back to Services
-          </Link>
-        </div>
-      </PageShell>
-    );
-  }
+function CapabilityPage() {
+  const { capability } = Route.useLoaderData();
+  const related = capabilities.filter((item) => item.slug !== capability.slug).slice(0, 3);
 
   return (
-    <PageShell 
-      eyebrow={`Service — ${service.title}`} 
-      title={<>{service.title}.</>}
-      lede={service.description}
+    <PageShell
+      eyebrow="Capability"
+      title={<>{capability.title}.</>}
+      lede={capability.lede}
     >
-      <div className="grid md:grid-cols-12 gap-10 lg:gap-14 py-12">
-        <div className="md:col-span-7">
-          <h2 className="font-display text-3xl mb-6">Our Approach</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {service.template}
-          </p>
-          <div className="mt-12 bg-rule border border-rule p-8">
-            <h3 className="font-mono text-sm uppercase tracking-widest mb-4">Template Design / Deliverables</h3>
-            <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-center gap-3">
-                <span className="text-primary">◆</span> Strategy & Research
+      <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+        <section className="border border-rule p-8 md:p-10">
+          <p className="eyebrow text-muted-foreground">What this includes</p>
+          <ul className="mt-8 space-y-5">
+            {capability.details.map((detail, index) => (
+              <li key={detail} className="flex gap-4 border-t border-rule pt-5">
+                <span className="font-mono text-xs text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="text-lg">{detail}</span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="text-primary">◆</span> Concept Development
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="text-primary">◆</span> High-Fidelity Execution
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="text-primary">◆</span> Final Delivery & Handoff
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="md:col-span-5">
-          <div className="aspect-square bg-foreground text-background p-8 flex flex-col justify-between">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-widest opacity-60">Ready to start?</p>
-              <h3 className="mt-4 font-display text-3xl leading-tight">Let's build something exceptional.</h3>
-            </div>
-            <Link to="/contact" className="inline-block border border-background px-6 py-4 font-mono text-xs uppercase tracking-widest hover:bg-background hover:text-foreground transition self-start">
-              Get in touch
+            ))}
+          </ul>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link
+              to="/submit"
+              className="bg-foreground text-background px-6 py-4 font-mono text-xs uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition"
+            >
+              Start this project
+            </Link>
+            <Link
+              to="/services"
+              className="border border-foreground px-6 py-4 font-mono text-xs uppercase tracking-widest hover:bg-foreground hover:text-background transition"
+            >
+              Back to capabilities
             </Link>
           </div>
+        </section>
+
+        <aside className="lg:sticky lg:top-24">
+          <CapabilityAnimation capability={capability} />
+          <div className="mt-6 border border-rule p-6">
+            <p className="eyebrow text-muted-foreground">Best for</p>
+            <p className="mt-3 font-display text-2xl leading-tight">{capability.short}</p>
+          </div>
+        </aside>
+      </div>
+
+      <section className="mt-16 border-t border-rule pt-10">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="eyebrow text-muted-foreground">Explore more</p>
+            <h2 className="mt-3 font-display text-3xl md:text-4xl">Related capabilities</h2>
+          </div>
+          <Link to="/services" className="font-mono text-xs uppercase tracking-widest hover:text-primary">
+            All services →
+          </Link>
         </div>
-      </div>
-      <div className="border-t border-rule pt-10 mt-10">
-        <Link to="/services" className="font-mono text-xs uppercase tracking-widest hover:text-primary transition flex items-center gap-3">
-          <span>←</span> Back to all services
-        </Link>
-      </div>
+        <div className="mt-8 grid gap-px bg-rule border border-rule md:grid-cols-3">
+          {related.map((item) => (
+            <Link
+              key={item.slug}
+              to="/services/$slug"
+              params={{ slug: item.slug }}
+              className="group bg-background p-6 hover:bg-foreground hover:text-background transition"
+            >
+              <h3 className="font-display text-2xl">{item.title}</h3>
+              <p className="mt-3 text-sm text-muted-foreground group-hover:text-background/70">{item.short}</p>
+              <span className="mt-6 inline-block font-mono text-xs uppercase tracking-widest">Open →</span>
+            </Link>
+          ))}
+        </div>
+      </section>
     </PageShell>
   );
 }

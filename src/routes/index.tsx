@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Reveal } from "@/components/reveal";
-import { ImageSequence } from "@/components/image-sequence";
 import founder from "@/assets/founder.png";
 import logo from "@/assets/logo.png";
+import { capabilities } from "@/lib/capabilities";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,24 +20,11 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
-  { t: "Website Development", slug: "website-development" },
-  { t: "UX / UI Design", slug: "ux-ui-design" },
-  { t: "App Development", slug: "app-development" },
-  { t: "Professional Branding", slug: "professional-branding" },
-  { t: "Video & Motion", slug: "video-motion" },
-  { t: "Sports Creatives", slug: "sports-tournament-creatives" },
-  { t: "Social Media", slug: "social-media-design" },
-  { t: "Posters & Banners", slug: "posters-banners" },
-  { t: "Event Visuals", slug: "event-visuals" },
-];
-
 function Index() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <SiteHeader />
       <main className="flex-1">
-        {/* HERO */}
         <section className="border-b border-rule">
           <div className="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-24 md:pb-28">
             <div className="grid md:grid-cols-12 gap-10 lg:gap-14 items-end">
@@ -67,19 +54,23 @@ function Index() {
           </div>
         </section>
 
-        {/* CINEMATIC SHOWREEL SECTION */}
         <section className="border-b border-rule bg-ink overflow-hidden">
-          <div className="relative aspect-video md:aspect-[21/9] w-full group cursor-pointer bg-black">
-            <ImageSequence 
-              frameCount={181} 
-              basePath="/animation" 
-              className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-700"
-              scrollControlled={true}
-            />
+          <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
+            <div className="contained-showreel">
+              <video
+                className="contained-showreel-video"
+                src="/media/capability-preview.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Frame and Form Labs showreel"
+              />
+            </div>
           </div>
         </section>
 
-        {/* MARQUEE */}
         <section className="border-b border-rule overflow-hidden bg-foreground text-background">
           <div className="flex whitespace-nowrap animate-marquee py-5 font-display text-3xl">
             {Array.from({ length: 2 }).map((_, i) => (
@@ -95,7 +86,6 @@ function Index() {
           </div>
         </section>
 
-        {/* INTERACTIVE 3D SECTION */}
         <section className="border-b border-rule bg-background">
           <div className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-12 gap-10 items-center">
             <Reveal className="md:col-span-5">
@@ -113,7 +103,6 @@ function Index() {
           </div>
         </section>
 
-        {/* INTRO / FOUNDER */}
         <section className="border-b border-rule">
           <div className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-12 gap-10 items-center">
             <Reveal className="md:col-span-5">
@@ -150,7 +139,6 @@ function Index() {
           </div>
         </section>
 
-        {/* SERVICES TEASER */}
         <section className="border-b border-rule">
           <div className="mx-auto max-w-7xl px-6 py-20">
             <div className="flex items-end justify-between mb-10">
@@ -161,14 +149,18 @@ function Index() {
               <Link to="/services" className="hidden md:inline font-mono text-xs uppercase tracking-widest hover:text-primary">All services →</Link>
             </div>
             <ul className="divide-y divide-rule border-y border-rule">
-              {services.map((s, i) => (
-                <Reveal as="li" key={s.slug} delay={i * 70} className="group transition-all">
-                  <Link to="/services/$slug" params={{ slug: s.slug }} className="flex items-center justify-between py-6 group-hover:px-3 w-full transition-all">
+              {capabilities.map((capability, i) => (
+                <Reveal as="li" key={capability.slug} delay={i * 70} className="group">
+                  <Link
+                    to="/services/$slug"
+                    params={{ slug: capability.slug }}
+                    className="flex items-center justify-between py-6 hover:px-3 transition-all"
+                  >
                     <div className="flex items-baseline gap-6">
                       <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
-                      <span className="font-display text-2xl md:text-3xl group-hover:text-primary transition">{s.t}</span>
+                      <span className="font-display text-2xl md:text-3xl group-hover:text-primary transition">{capability.title}</span>
                     </div>
-                    <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground group-hover:text-foreground">→</span>
+                    <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground group-hover:text-foreground">Open →</span>
                   </Link>
                 </Reveal>
               ))}
@@ -176,7 +168,6 @@ function Index() {
           </div>
         </section>
 
-        {/* PHILOSOPHY */}
         <section className="border-b border-rule bg-foreground text-background">
           <div className="mx-auto max-w-7xl px-6 py-24 grid md:grid-cols-12 gap-10">
             <Reveal className="md:col-span-4">
@@ -193,7 +184,6 @@ function Index() {
           </div>
         </section>
 
-        {/* CTA */}
         <section>
           <div className="mx-auto max-w-7xl px-6 py-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <Reveal as="h2" className="font-display text-4xl md:text-6xl leading-tight max-w-3xl">
